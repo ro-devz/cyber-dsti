@@ -7,6 +7,19 @@ body {
     display: block;
 }
 
+.background {
+    background-image: url('/static/background.jpg');
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+    z-index: -1;
+}
+
 .outer {
     display: table;
     position: absolute;
@@ -162,21 +175,4 @@ body {
     .inner {
         padding: 24px;
     }
-}
-
-body {
-    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #262626;
-    background-color: #f2f2f2;
-    display: block;
-    height: 100%;
-}
-
-.background {
-    background-image: url("/static/illustration.png");
-    background-size: cover;
-    background-position: center;
-    position: fixed;
 }
